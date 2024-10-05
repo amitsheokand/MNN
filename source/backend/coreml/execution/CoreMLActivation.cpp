@@ -90,6 +90,27 @@ ErrorCode CoreMLActivation::onResize(const std::vector<Tensor *> &inputs, const 
                 mLayer_->activation->sigmoid = mCoreMLBackend->create<CoreML__Specification__ActivationSigmoid>();
                 core_ml__specification__activation_sigmoid__init(mLayer_->activation->sigmoid);
                 break;
+            case OpType_While:
+                // mLayer_->layer_case = CORE_ML__SPECIFICATION__NEURAL_NETWORK_LAYER__LAYER_LOOP;
+                // mLayer_->loop = mCoreMLBackend->create<CoreML__Specification__LoopLayerParams>();
+                // core_ml__specification__loop_layer_params__init(mLayer_->loop);
+                // printf("While is not supported in CoreML\n");
+                // break;
+                return NOT_SUPPORT;
+            case OpType_Gather:
+                // mLayer_->layer_case = CORE_ML__SPECIFICATION__NEURAL_NETWORK_LAYER__LAYER_GATHER;
+                // mLayer_->gather = mCoreMLBackend->create<CoreML__Specification__GatherLayerParams>();
+                // core_ml__specification__gather_layer_params__init(mLayer_->gather);
+                mLayer_->gather->axis = mOp->main_as_Gather()->axis();
+                printf("Gather is not supported in CoreML\n");
+                return NOT_SUPPORT;
+            case OpType_GatherV2:
+                // mLayer_->layer_case = CORE_ML__SPECIFICATION__NEURAL_NETWORK_LAYER__LAYER_GATHER;
+                // mLayer_->gather = mCoreMLBackend->create<CoreML__Specification__GatherLayerParams>();
+                // core_ml__specification__gather_layer_params__init(mLayer_->gather);
+                // mLayer_->gather->axis = mOp->main_as_GatherV2()->Taxis();
+                printf("TODO: GatherV2 is not supported in CoreML, WIP\n");
+                return NOT_SUPPORT;
             default:
                 return NOT_SUPPORT;
         }
